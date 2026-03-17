@@ -1,0 +1,122 @@
+{
+  "design_strategy": {
+    "theme_name": "Neo-Brutalist Notebook",
+    "core_concept": "A high-energy, clarity-focused digital workspace that treats math like a sport. High contrast, bold borders, and vibrant 'highlighter' accents.",
+    "target_audience": "Gen Z Students (14-16), Teachers, Parents",
+    "emotional_tone": "Confident, Energetic, Clear, Structured, playful but pro"
+  },
+  "typography": {
+    "headings": {
+      "font_family": "Space Grotesk, sans-serif",
+      "import_url": "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap",
+      "weights": ["500", "700"],
+      "usage": "All section headers, card titles, and big stats. Use tight tracking (-0.02em)."
+    },
+    "body": {
+      "font_family": "Outfit, sans-serif",
+      "import_url": "https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap",
+      "weights": ["400", "500"],
+      "usage": "Paragraphs, UI elements, questions, explanations."
+    },
+    "mono": {
+      "font_family": "JetBrains Mono, monospace",
+      "import_url": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap",
+      "usage": "Formulas, code snippets, numbers in data tables."
+    }
+  },
+  "colors": {
+    "palette": {
+      "background": "#FFFFFF",
+      "surface": "#F8FAFC",
+      "foreground": "#0F172A",
+      "border": "#000000",
+      "primary": "#000000",
+      "primary_foreground": "#FFFFFF",
+      "secondary": "#FFFFFF",
+      "secondary_foreground": "#000000",
+      "muted": "#F1F5F9",
+      "muted_foreground": "#64748B"
+    },
+    "accents": {
+      "edexcel": "#2563EB",
+      "aqa": "#DB2777",
+      "ocr": "#EA580C",
+      "success": "#16A34A",
+      "warning": "#FACC15",
+      "error": "#DC2626",
+      "info": "#8B5CF6"
+    },
+    "gradients": {
+      "hero_overlay": "linear-gradient(180deg, rgba(255,255,255,0) 0%, #FFFFFF 100%)",
+      "subtle_mesh": "radial-gradient(circle at 50% 50%, #F8FAFC 0%, #FFFFFF 100%)"
+    }
+  },
+  "visual_enhancers": {
+    "borders": "border-2 border-black",
+    "radius": "rounded-xl",
+    "shadows": {
+      "hard": "4px 4px 0px 0px #000000",
+      "hard_sm": "2px 2px 0px 0px #000000",
+      "hard_lg": "8px 8px 0px 0px #000000",
+      "hover_lift": "translate-x-[-2px] translate-y-[-2px] shadow-[6px_6px_0px_0px_#000000]"
+    },
+    "textures": "Use subtle dot patterns (bg-[url('/dots.svg')]) in neutral sections to avoid flatness."
+  },
+  "layout": {
+    "container": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
+    "grid_system": "Bento Grid (mix of col-span-1, col-span-2, row-span-2)",
+    "spacing": {
+      "section_gap": "py-24",
+      "component_gap": "gap-6"
+    }
+  },
+  "component_styling": {
+    "buttons": {
+      "primary": "bg-black text-white border-2 border-black hover:bg-neutral-800 hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_0px_#000000] transition-all duration-200 font-bold px-6 py-3 rounded-lg active:translate-y-[0px] active:shadow-none",
+      "secondary": "bg-white text-black border-2 border-black hover:bg-neutral-50 hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_0px_#000000] transition-all duration-200 font-bold px-6 py-3 rounded-lg",
+      "accent_edexcel": "bg-blue-600 text-white border-2 border-black hover:bg-blue-500 shadow-[4px_4px_0px_0px_#000000]",
+      "accent_aqa": "bg-pink-600 text-white border-2 border-black hover:bg-pink-500 shadow-[4px_4px_0px_0px_#000000]",
+      "accent_ocr": "bg-orange-600 text-white border-2 border-black hover:bg-orange-500 shadow-[4px_4px_0px_0px_#000000]"
+    },
+    "cards": {
+      "base": "bg-white border-2 border-black rounded-xl p-6 shadow-[4px_4px_0px_0px_#000000] transition-transform hover:-translate-y-1",
+      "interactive": "cursor-pointer hover:shadow-[6px_6px_0px_0px_#000000] active:translate-y-0 active:shadow-[2px_2px_0px_0px_#000000]"
+    },
+    "tabs": {
+      "list": "bg-neutral-100 border-2 border-black p-1 rounded-lg gap-2",
+      "trigger": "data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:border-2 data-[state=active]:border-black data-[state=active]:shadow-[2px_2px_0px_0px_#000000] rounded-md px-4 py-2 font-bold text-neutral-500 transition-all"
+    },
+    "inputs": "border-2 border-black rounded-lg px-4 py-3 focus:ring-0 focus:shadow-[4px_4px_0px_0px_#000000] transition-shadow placeholder:text-neutral-400 bg-white"
+  },
+  "image_urls": {
+    "hero_abstract": "https://images.unsplash.com/photo-1747654805004-0d7e1b1f630c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NjV8MHwxfHNlYXJjaHw0fHxtYXRoZW1hdGljcyUyMGdlb21ldHJ5JTIwYWJzdHJhY3R8ZW58MHx8fHwxNzczNzY3MjkyfDA&ixlib=rb-4.1.0&q=85",
+    "topic_geometry": "https://images.unsplash.com/photo-1747654804207-9bfb6cde98f7?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NjV8MHwxfHNlYXJjaHwyfHxtYXRoZW1hdGljcyUyMGdlb21ldHJ5JTIwYWJzdHJhY3R8ZW58MHx8fHwxNzczNzY3MjkyfDA&ixlib=rb-4.1.0&q=85",
+    "student_studying": "https://images.unsplash.com/photo-1516534775068-ba3e7458af70?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA3MDR8MHwxfHNlYXJjaHwyfHxzdHVkZW50JTIwc3R1ZHlpbmclMjBoYXBweXxlbnwwfHx8fDE3NzM3NjcyOTF8MA&ixlib=rb-4.1.0&q=85",
+    "student_happy": "https://images.unsplash.com/photo-1514355315815-2b64b0216b14?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA3MDR8MHwxfHNlYXJjaHw0fHxzdHVkZW50JTIwc3R1ZHlpbmclMjBoYXBweXxlbnwwfHx8fDE3NzM3NjcyOTF8MA&ixlib=rb-4.1.0&q=85"
+  },
+  "icons_library": {
+    "primary": "lucide-react",
+    "brand_logos": "simple-icons (if needed for brands) or text based"
+  },
+  "motion": {
+    "page_transition": "initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3, ease: 'easeOut' }}",
+    "hover_spring": "whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} transition={{ type: 'spring', stiffness: 400, damping: 17 }}"
+  },
+  "instructions_to_main_agent": [
+    "INSTALL FONTS: Add Space Grotesk and Outfit to index.html or import in CSS immediately.",
+    "TAILWIND CONFIG: Update tailwind.config.js to include the 'hard' shadows and new border widths.",
+    "NEO-BRUTALISM: Apply 'border-2 border-black' to almost every container/card. This is the core aesthetic.",
+    "EXAM BOARDS: Use the specific accent colors for the tabs: Blue for Edexcel, Pink for AQA, Orange for OCR.",
+    "AI EXPLANATIONS: Display these in a 'Chat Bubble' style container with rounded corners but sharp tails.",
+    "FORMULAS: Render math using KaTeX or MathJax if possible, or clean monospace font.",
+    "NAVIGATION: Make the top nav sticky with a glass effect (backdrop-blur-md) but keep the bottom border solid black.",
+    "MOBILE: Ensure the 'Topic Explorer' grid collapses to 1 column on mobile but keeps the vibrant card style."
+  ],
+  "universal_guidelines": [
+    "Don't make generic centered layouts. Use asymmetry where possible.",
+    "Use 2-3x more spacing than feels comfortable.",
+    "Every interaction needs micro-animations.",
+    "Use 'sonner' for toasts.",
+    "Interactive elements MUST include data-testid."
+  ]
+}
