@@ -56,23 +56,27 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section data-testid="hero-section" className="relative py-16 sm:py-24 lg:py-32 overflow-hidden">
-        <div className="absolute inset-0 dot-pattern opacity-50" />
+      <section data-testid="hero-section" className="relative py-16 sm:py-24 lg:py-32 overflow-hidden bg-blue-50">
+        {/* Decorative colour blobs */}
+        <div className="absolute top-10 right-10 w-64 h-64 bg-blue-200 rounded-full opacity-60 blur-3xl" />
+        <div className="absolute bottom-0 left-20 w-80 h-80 bg-violet-200 rounded-full opacity-50 blur-3xl" />
+        <div className="absolute top-1/2 right-1/3 w-48 h-48 bg-pink-200 rounded-full opacity-40 blur-3xl" />
+        <div className="absolute inset-0 dot-pattern opacity-30" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full text-sm font-bold mb-6 animate-fade-in-up">
+            <div className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-bold mb-6 animate-fade-in-up border-2 border-black shadow-hard-sm">
               <Star size={14} />
               Free GCSE Maths Revision
             </div>
             <h1
               data-testid="hero-title"
-              className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 animate-fade-in-up stagger-1"
+              className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 animate-fade-in-up stagger-1 text-slate-900"
             >
               Ace your <span className="text-blue-600">GCSE Maths</span> exam with confidence
             </h1>
             <p
               data-testid="hero-subtitle"
-              className="text-base sm:text-lg text-neutral-600 mb-8 max-w-2xl leading-relaxed animate-fade-in-up stagger-2"
+              className="text-base sm:text-lg text-slate-600 mb-8 max-w-2xl leading-relaxed animate-fade-in-up stagger-2"
             >
               Everything you need to smash your maths GCSE. Clear explanations, past paper practice, 
               interactive quizzes, and an AI tutor that never gets tired of your questions.
@@ -89,7 +93,7 @@ export default function HomePage() {
               <Link
                 to="/ai-tutor"
                 data-testid="hero-ai-tutor-btn"
-                className="neo-btn bg-white text-black hover:bg-neutral-50"
+                className="neo-btn bg-white text-black hover:bg-blue-50 border-2 border-black"
               >
                 Ask AI Tutor
               </Link>
@@ -99,18 +103,18 @@ export default function HomePage() {
       </section>
 
       {/* Stats Bar */}
-      <section className="border-y-2 border-black bg-neutral-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <section className="border-y-2 border-black bg-violet-600 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
-              { stat: "19+", label: "Topics Covered" },
-              { stat: "25+", label: "Quiz Questions" },
-              { stat: "3", label: "Exam Boards" },
-              { stat: "20+", label: "Key Formulas" },
+              { stat: "19+", label: "Topics Covered", emoji: "book" },
+              { stat: "25+", label: "Quiz Questions", emoji: "brain" },
+              { stat: "3", label: "Exam Boards", emoji: "clipboard" },
+              { stat: "20+", label: "Key Formulas", emoji: "calculator" },
             ].map((item, i) => (
               <div key={i} data-testid={`stat-${i}`}>
-                <div className="font-heading text-3xl font-bold">{item.stat}</div>
-                <div className="text-sm text-neutral-500 font-medium">{item.label}</div>
+                <div className="font-heading text-4xl font-bold">{item.stat}</div>
+                <div className="text-sm text-violet-200 font-medium mt-1">{item.label}</div>
               </div>
             ))}
           </div>
@@ -118,12 +122,14 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section data-testid="features-section" className="py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section data-testid="features-section" className="py-16 sm:py-24 bg-amber-50 relative overflow-hidden">
+        <div className="absolute -top-20 -right-20 w-72 h-72 bg-orange-200 rounded-full opacity-40 blur-3xl" />
+        <div className="absolute bottom-10 left-10 w-56 h-56 bg-yellow-200 rounded-full opacity-40 blur-3xl" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-3">
             Everything you need
           </h2>
-          <p className="text-neutral-500 mb-12 text-base sm:text-lg max-w-xl">
+          <p className="text-slate-600 mb-12 text-base sm:text-lg max-w-xl">
             From topic breakdowns to AI-powered help, we've got your revision sorted.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -152,12 +158,14 @@ export default function HomePage() {
       </section>
 
       {/* Topic Categories */}
-      <section data-testid="categories-section" className="py-16 sm:py-24 bg-neutral-50 border-y-2 border-black">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section data-testid="categories-section" className="py-16 sm:py-24 bg-green-50 border-y-2 border-black relative overflow-hidden">
+        <div className="absolute top-20 right-20 w-72 h-72 bg-green-200 rounded-full opacity-50 blur-3xl" />
+        <div className="absolute -bottom-10 left-1/3 w-64 h-64 bg-teal-200 rounded-full opacity-40 blur-3xl" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-3">
             GCSE Maths Topics
           </h2>
-          <p className="text-neutral-500 mb-12 text-base sm:text-lg">
+          <p className="text-slate-600 mb-12 text-base sm:text-lg">
             The complete syllabus, broken down into 5 clear categories.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -183,12 +191,14 @@ export default function HomePage() {
       </section>
 
       {/* Exam Boards Quick Access */}
-      <section data-testid="exam-boards-section" className="py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section data-testid="exam-boards-section" className="py-16 sm:py-24 bg-pink-50 relative overflow-hidden">
+        <div className="absolute top-10 left-10 w-60 h-60 bg-pink-200 rounded-full opacity-50 blur-3xl" />
+        <div className="absolute bottom-20 right-20 w-56 h-56 bg-rose-200 rounded-full opacity-40 blur-3xl" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-3">
             Past Papers by Exam Board
           </h2>
-          <p className="text-neutral-500 mb-12 text-base sm:text-lg">
+          <p className="text-slate-600 mb-12 text-base sm:text-lg">
             Practice with questions from your specific exam board.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -220,26 +230,32 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 sm:py-24 bg-black text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="py-16 sm:py-24 bg-blue-600 text-white relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-10 left-20 w-32 h-32 border-4 border-white rounded-full" />
+          <div className="absolute bottom-10 right-32 w-24 h-24 border-4 border-white rounded-lg rotate-45" />
+          <div className="absolute top-1/2 left-1/2 w-40 h-40 border-4 border-white rounded-full" />
+          <div className="absolute top-20 right-1/4 w-16 h-16 border-4 border-white" />
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
           <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-4">
             Ready to smash your GCSE?
           </h2>
-          <p className="text-neutral-400 mb-8 max-w-lg mx-auto">
+          <p className="text-blue-100 mb-8 max-w-lg mx-auto">
             Start revising now with clear explanations, practice questions, and AI-powered help.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               to="/topics"
               data-testid="cta-start-btn"
-              className="neo-btn bg-white text-black border-2 border-white hover:bg-neutral-100"
+              className="neo-btn bg-white text-blue-700 border-2 border-black hover:bg-blue-50 font-bold"
             >
               Start Revising
             </Link>
             <Link
               to="/ai-tutor"
               data-testid="cta-ai-btn"
-              className="neo-btn bg-transparent text-white border-2 border-white hover:bg-white/10"
+              className="neo-btn bg-transparent text-white border-2 border-white hover:bg-white/10 font-bold"
             >
               Try AI Tutor
             </Link>
@@ -248,13 +264,13 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t-2 border-black py-8">
+      <footer className="border-t-2 border-black py-8 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <div className="font-heading font-bold text-sm">
               GCSE Maths Master
             </div>
-            <div className="text-sm text-neutral-500">
+            <div className="text-sm text-slate-500">
               Covering Edexcel, AQA & OCR exam boards
             </div>
           </div>
