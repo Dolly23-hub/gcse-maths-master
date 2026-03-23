@@ -81,6 +81,13 @@ class QuizCheckRequest(BaseModel):
     question_id: str
     selected_answer: int
 
+class RevisionPlanRequest(BaseModel):
+    exam_board: str
+    exam_date: str  # ISO format date
+    confidence: dict  # category -> 1-5 rating
+    study_hours_per_day: float = 1.0
+    use_ai: bool = True
+
 # --- API Routes ---
 @api_router.get("/")
 async def root():
@@ -139,6 +146,159 @@ async def get_formulas():
 async def get_formulas_by_category(category: str):
     formulas = await db.formulas.find({"category": category}, {"_id": 0}).to_list(100)
     return {"formulas": formulas}
+
+@api_router.post("/revision-plan")
+async def generate_revision_plan(req: RevisionPlanRequest):
+    from datetime import date as date_type
+    import math
+
+    # Parse exam date
+    try:
+        exam_date = datetime.fromisoformat(req.exam_date).date()
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid date format")
+
+    today = datetime.now(timezone.utc).date()
+    days_until_exam = (exam_date - today).days
+    if days_until_exam < 1:
+        raise HTTPException(status_code=400, detail="Exam date must be in the future")
+
+    # Get all topics
+    topics = await db.topics.find({}, {"_id": 0}).sort("order", 1).to_list(200)
+
+    # Score topics by priority (lower confidence = higher priority)
+    categories = ["Number", "Algebra", "Ratio & Proportion", "Geometry & Measures", "Probability & Statistics"]
+    category_priority = {}
+    for cat in categories:
+        confidence = req.confidence.get(cat, 3)
+        category_priority[cat] = 6 - confidence  # invert: 1 confidence -> 5 priority
+
+    # Sort topics: highest priority first, then by difficulty
+    def topic_sort_key(t):
+        prio = category_priority.get(t["category"], 3)
+        return (-prio, -t.get("difficulty", 1))
+
+    sorted_topics = sorted(topics, key=topic_sort_key)
+
+    # Calculate weeks available
+    weeks_available = max(1, days_until_exam // 7)
+    topics_per_week = max(1, math.ceil(len(sorted_topics) / weeks_available))
+
+    # Build weekly schedule
+    schedule = []
+    for week_num in range(weeks_available):
+        start_idx = week_num * topics_per_week
+        end_idx = min(start_idx + topics_per_week, len(sorted_topics))
+        week_topics = sorted_topics[start_idx:end_idx]
+        if not week_topics:
+            break
+
+        week_start = today + __import__('datetime').timedelta(days=week_num * 7)
+        week_end = week_start + __import__('datetime').timedelta(days=6)
+
+        # Determine focus category for the week
+        cat_counts = {}
+        for t in week_topics:
+            cat_counts[t["category"]] = cat_counts.get(t["category"], 0) + 1
+        focus_category = max(cat_counts, key=cat_counts.get) if cat_counts else "Mixed"
+
+        schedule.append({
+            "week": week_num + 1,
+            "start_date": week_start.isoformat(),
+            "end_date": week_end.isoformat(),
+            "focus_category": focus_category,
+            "topics": [{"id": t["id"], "title": t["title"], "category": t["category"], "difficulty": t["difficulty"]} for t in week_topics],
+            "activities": [
+                f"Study {len(week_topics)} topic(s) - focus on {focus_category}",
+                "Complete worked examples for each topic",
+                "Take quizzes on covered topics",
+                f"Spend ~{req.study_hours_per_day} hour(s) per day",
+            ]
+        })
+
+    # Add final revision weeks if space
+    if weeks_available > len(schedule):
+        remaining = weeks_available - len(schedule)
+        for i in range(min(remaining, 3)):
+            week_num = len(schedule)
+            week_start = today + __import__('datetime').timedelta(days=week_num * 7)
+            week_end = week_start + __import__('datetime').timedelta(days=6)
+
+            weak_cats = [cat for cat, prio in sorted(category_priority.items(), key=lambda x: -x[1])[:2]]
+            schedule.append({
+                "week": week_num + 1,
+                "start_date": week_start.isoformat(),
+                "end_date": week_end.isoformat(),
+                "focus_category": "Revision & Practice",
+                "topics": [],
+                "activities": [
+                    f"Review weak areas: {', '.join(weak_cats)}",
+                    f"Complete {req.exam_board} past papers under timed conditions",
+                    "Review mistakes from quizzes and past papers",
+                    "Practice mixed questions across all topics",
+                ]
+            })
+
+    # Generate AI tips if requested
+    ai_tips = []
+    if req.use_ai and EMERGENT_LLM_KEY:
+        try:
+            weak_areas = [cat for cat, conf in req.confidence.items() if conf <= 2]
+            strong_areas = [cat for cat, conf in req.confidence.items() if conf >= 4]
+
+            session_id = str(uuid.uuid4())
+            chat = LlmChat(
+                api_key=EMERGENT_LLM_KEY,
+                session_id=session_id,
+                system_message="You are a GCSE Maths revision expert. Give exactly 5 short, practical revision tips (1-2 sentences each). Use British English. Be encouraging. Return as a JSON array of strings."
+            )
+            chat.with_model("openai", "gpt-5.2")
+
+            prompt = f"A student is preparing for their {req.exam_board} GCSE Maths exam in {days_until_exam} days. "
+            if weak_areas:
+                prompt += f"They're struggling with: {', '.join(weak_areas)}. "
+            if strong_areas:
+                prompt += f"They're strong in: {', '.join(strong_areas)}. "
+            prompt += f"They can study {req.study_hours_per_day} hours per day. Give 5 personalised revision tips as a JSON array of strings."
+
+            user_message = UserMessage(text=prompt)
+            response = await chat.send_message(user_message)
+
+            # Try to parse JSON from response
+            import json
+            try:
+                # Find JSON array in response
+                start = response.find('[')
+                end = response.rfind(']') + 1
+                if start != -1 and end > start:
+                    ai_tips = json.loads(response[start:end])
+            except Exception:
+                ai_tips = [response]
+        except Exception as e:
+            logger.error(f"AI tips error: {str(e)}")
+            ai_tips = [
+                "Focus on your weakest topics first - that's where you'll gain the most marks.",
+                "Do at least one past paper per week under timed conditions.",
+                "Always show your working in the exam - you get marks for method!",
+                "Use the formula sheet to memorise key formulas before the exam.",
+                "Get a good night's sleep before the exam - a fresh brain works better!"
+            ]
+
+    # Summary stats
+    weak_cats = [cat for cat, conf in req.confidence.items() if conf <= 2]
+    strong_cats = [cat for cat, conf in req.confidence.items() if conf >= 4]
+
+    return {
+        "exam_board": req.exam_board,
+        "exam_date": req.exam_date,
+        "days_remaining": days_until_exam,
+        "weeks_remaining": weeks_available,
+        "total_topics": len(sorted_topics),
+        "weak_areas": weak_cats,
+        "strong_areas": strong_cats,
+        "schedule": schedule,
+        "ai_tips": ai_tips,
+    }
 
 @api_router.post("/ai-tutor")
 async def ai_tutor(req: AITutorRequest):
@@ -1120,7 +1280,7 @@ Example: If a line has gradient 2, the perpendicular gradient is -1/2""",
         await db.formulas.insert_one(f)
 
     # --- INSERT ADDITIONAL CONTENT ---
-    from seed_data import ADDITIONAL_TOPICS, ADDITIONAL_QUIZZES, ADDITIONAL_PAST_PAPERS, ADDITIONAL_FORMULAS
+    from seed_data import ADDITIONAL_TOPICS, ADDITIONAL_QUIZZES, ADDITIONAL_PAST_PAPERS, ADDITIONAL_FORMULAS, PAPERS_2020_2021
 
     for topic in ADDITIONAL_TOPICS:
         await db.topics.insert_one(topic)
@@ -1128,12 +1288,14 @@ Example: If a line has gradient 2, the perpendicular gradient is -1/2""",
         await db.quizzes.insert_one(q)
     for paper in ADDITIONAL_PAST_PAPERS:
         await db.past_papers.insert_one(paper)
+    for paper in PAPERS_2020_2021:
+        await db.past_papers.insert_one(paper)
     for f in ADDITIONAL_FORMULAS:
         await db.formulas.insert_one(f)
 
     total_topics = len(topics_data) + len(ADDITIONAL_TOPICS)
     total_quizzes = len(quiz_data) + len(ADDITIONAL_QUIZZES)
-    total_papers = len(past_papers_data) + len(ADDITIONAL_PAST_PAPERS)
+    total_papers = len(past_papers_data) + len(ADDITIONAL_PAST_PAPERS) + len(PAPERS_2020_2021)
     total_formulas = len(formulas_data) + len(ADDITIONAL_FORMULAS)
 
     return {"message": "Database seeded successfully", "topics": total_topics, "quizzes": total_quizzes, "papers": total_papers, "formulas": total_formulas}

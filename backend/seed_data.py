@@ -747,3 +747,94 @@ ADDITIONAL_FORMULAS = [
     {"id": "f-29", "category": "Probability & Statistics", "name": "Mean from Frequency Table", "formula": "Mean = Sum(f x x) / Sum(f)", "description": "Estimated mean from a frequency table using midpoints for grouped data", "usage_example": "Total of fx = 250, total frequency = 40, mean = 6.25"},
     {"id": "f-30", "category": "Geometry & Measures", "name": "Volume of Pyramid", "formula": "V = 1/3 x base area x height", "description": "Volume of any pyramid", "usage_example": "Square base 6x6, height 10: V = 1/3 x 36 x 10 = 120 cm^3"},
 ]
+
+# Past papers for 2020 and 2021
+PAPERS_2020_2021 = [
+    # EDEXCEL 2021
+    {"id": "pp-ed-2021-1f", "board": "Edexcel", "year": "2021", "paper_number": 1, "tier": "Foundation", "calculator_allowed": False, "description": "Paper 1 Non-Calculator (Foundation) - June 2021", "link": "https://qualifications.pearson.com/en/qualifications/edexcel-gcses/mathematics-2015.html", "practice_questions": [
+        {"question": "Work out 1/3 + 1/6", "answer": "Common denominator 6: 2/6 + 1/6 = 3/6 = 1/2", "marks": 2, "topic": "Fractions"},
+        {"question": "Simplify 4a + 3b - a + 5b", "answer": "4a - a = 3a, 3b + 5b = 8b. Answer: 3a + 8b", "marks": 2, "topic": "Algebra"},
+        {"question": "A bag has 3 red, 4 blue, and 3 green balls. Find P(blue).", "answer": "P(blue) = 4/10 = 2/5", "marks": 1, "topic": "Probability"},
+        {"question": "Find 25% of 480", "answer": "25% = 1/4. 480 / 4 = 120", "marks": 1, "topic": "Percentages"},
+    ]},
+    {"id": "pp-ed-2021-2f", "board": "Edexcel", "year": "2021", "paper_number": 2, "tier": "Foundation", "calculator_allowed": True, "description": "Paper 2 Calculator (Foundation) - June 2021", "link": "https://qualifications.pearson.com/en/qualifications/edexcel-gcses/mathematics-2015.html", "practice_questions": [
+        {"question": "A rectangle has length 12 cm and width 5 cm. Find its area and perimeter.", "answer": "Area = 12 x 5 = 60 cm^2. Perimeter = 2(12 + 5) = 34 cm", "marks": 3, "topic": "Geometry"},
+        {"question": "Calculate the mean of: 4, 7, 3, 8, 5, 9, 6", "answer": "Sum = 42. Mean = 42/7 = 6", "marks": 2, "topic": "Averages"},
+        {"question": "A car travels 240 km at 80 km/h. How long does the journey take?", "answer": "Time = Distance / Speed = 240 / 80 = 3 hours", "marks": 2, "topic": "Speed"},
+    ]},
+    {"id": "pp-ed-2021-3f", "board": "Edexcel", "year": "2021", "paper_number": 3, "tier": "Foundation", "calculator_allowed": True, "description": "Paper 3 Calculator (Foundation) - June 2021", "link": "https://qualifications.pearson.com/en/qualifications/edexcel-gcses/mathematics-2015.html", "practice_questions": [
+        {"question": "Share 350 in the ratio 2:5", "answer": "Total parts = 7. One part = 350/7 = 50. Shares: 100 and 250", "marks": 2, "topic": "Ratio"},
+        {"question": "A shirt costs 45 before a 20% discount. Find the sale price.", "answer": "20% of 45 = 9. Sale price = 45 - 9 = 36", "marks": 2, "topic": "Percentages"},
+    ]},
+    {"id": "pp-ed-2021-1h", "board": "Edexcel", "year": "2021", "paper_number": 1, "tier": "Higher", "calculator_allowed": False, "description": "Paper 1 Non-Calculator (Higher) - June 2021", "link": "https://qualifications.pearson.com/en/qualifications/edexcel-gcses/mathematics-2015.html", "practice_questions": [
+        {"question": "Factorise x^2 - 9x + 20", "answer": "Find numbers that multiply to 20 and add to -9: -4 and -5. (x-4)(x-5)", "marks": 2, "topic": "Algebra"},
+        {"question": "Simplify sqrt(75)", "answer": "sqrt(75) = sqrt(25 x 3) = 5sqrt(3)", "marks": 2, "topic": "Surds"},
+        {"question": "Work out (2^3)^4", "answer": "(2^3)^4 = 2^12 = 4096", "marks": 1, "topic": "Indices"},
+        {"question": "Prove that the sum of two consecutive numbers is always odd.", "answer": "Let the numbers be n and n+1. Sum = n + (n+1) = 2n + 1. Since 2n is even, 2n+1 is odd.", "marks": 3, "topic": "Proof"},
+    ]},
+    {"id": "pp-ed-2021-2h", "board": "Edexcel", "year": "2021", "paper_number": 2, "tier": "Higher", "calculator_allowed": True, "description": "Paper 2 Calculator (Higher) - June 2021", "link": "https://qualifications.pearson.com/en/qualifications/edexcel-gcses/mathematics-2015.html", "practice_questions": [
+        {"question": "Solve 3x^2 + 5x - 2 = 0 to 2 d.p.", "answer": "Using formula: x = (-5 +/- sqrt(25+24))/6 = (-5 +/- 7)/6. x = 1/3 = 0.33 or x = -2.00", "marks": 3, "topic": "Quadratics"},
+        {"question": "A cylinder has radius 5 cm and height 12 cm. Find the volume.", "answer": "V = pi x r^2 x h = pi x 25 x 12 = 300pi = 942.5 cm^3", "marks": 3, "topic": "Volume"},
+    ]},
+    # EDEXCEL 2020
+    {"id": "pp-ed-2020-1f", "board": "Edexcel", "year": "2020", "paper_number": 1, "tier": "Foundation", "calculator_allowed": False, "description": "Paper 1 Non-Calculator (Foundation) - November 2020", "link": "https://qualifications.pearson.com/en/qualifications/edexcel-gcses/mathematics-2015.html", "practice_questions": [
+        {"question": "Write 0.35 as a fraction in its simplest form", "answer": "0.35 = 35/100 = 7/20", "marks": 1, "topic": "Fractions"},
+        {"question": "Solve 4x + 3 = 19", "answer": "4x = 16, x = 4", "marks": 2, "topic": "Equations"},
+        {"question": "What is the next term in: 1, 4, 9, 16, ...?", "answer": "These are square numbers. Next = 25", "marks": 1, "topic": "Sequences"},
+        {"question": "A triangle has angles 65 and 48 degrees. Find the third angle.", "answer": "180 - 65 - 48 = 67 degrees", "marks": 1, "topic": "Angles"},
+    ]},
+    {"id": "pp-ed-2020-2h", "board": "Edexcel", "year": "2020", "paper_number": 2, "tier": "Higher", "calculator_allowed": True, "description": "Paper 2 Calculator (Higher) - November 2020", "link": "https://qualifications.pearson.com/en/qualifications/edexcel-gcses/mathematics-2015.html", "practice_questions": [
+        {"question": "2500 is invested at 3.5% compound interest. Find the value after 4 years.", "answer": "2500 x 1.035^4 = 2500 x 1.1475 = 2868.76", "marks": 3, "topic": "Interest"},
+        {"question": "Find the equation of the line perpendicular to y = 2x + 3 passing through (4, 1).", "answer": "Perp gradient = -1/2. y = -1/2 x + c. 1 = -2 + c, c = 3. y = -1/2 x + 3", "marks": 3, "topic": "Graphs"},
+        {"question": "A cone has radius 6 cm and slant height 10 cm. Find the curved surface area.", "answer": "CSA = pi x r x l = pi x 6 x 10 = 60pi = 188.5 cm^2", "marks": 2, "topic": "Surface Area"},
+    ]},
+    # AQA 2021
+    {"id": "pp-aqa-2021-1f", "board": "AQA", "year": "2021", "paper_number": 1, "tier": "Foundation", "calculator_allowed": False, "description": "Paper 1 Non-Calculator (Foundation) - June 2021", "link": "https://www.aqa.org.uk/subjects/mathematics/gcse/mathematics-8300", "practice_questions": [
+        {"question": "Round 4.367 to 2 decimal places", "answer": "4.37 (the 7 rounds the 6 up)", "marks": 1, "topic": "Rounding"},
+        {"question": "Expand 3(2x + 5)", "answer": "6x + 15", "marks": 1, "topic": "Algebra"},
+        {"question": "A bag contains 5 red and 3 blue counters. One is chosen at random. Find P(red).", "answer": "P(red) = 5/8", "marks": 1, "topic": "Probability"},
+        {"question": "Write 56 as a product of prime factors", "answer": "56 = 2 x 28 = 2 x 2 x 14 = 2 x 2 x 2 x 7 = 2^3 x 7", "marks": 2, "topic": "Prime Factors"},
+    ]},
+    {"id": "pp-aqa-2021-2f", "board": "AQA", "year": "2021", "paper_number": 2, "tier": "Foundation", "calculator_allowed": True, "description": "Paper 2 Calculator (Foundation) - June 2021", "link": "https://www.aqa.org.uk/subjects/mathematics/gcse/mathematics-8300", "practice_questions": [
+        {"question": "A map scale is 1:25000. Two towns are 6 cm apart on the map. Find the real distance.", "answer": "6 x 25000 = 150,000 cm = 1,500 m = 1.5 km", "marks": 2, "topic": "Scale"},
+        {"question": "Find the area of a triangle with base 9 cm and height 6 cm.", "answer": "Area = 1/2 x 9 x 6 = 27 cm^2", "marks": 2, "topic": "Area"},
+    ]},
+    {"id": "pp-aqa-2021-3h", "board": "AQA", "year": "2021", "paper_number": 3, "tier": "Higher", "calculator_allowed": True, "description": "Paper 3 Calculator (Higher) - June 2021", "link": "https://www.aqa.org.uk/subjects/mathematics/gcse/mathematics-8300", "practice_questions": [
+        {"question": "Solve simultaneously: 3x + 2y = 19 and 2x - y = 1", "answer": "From eq2: y = 2x - 1. Sub: 3x + 2(2x-1) = 19. 7x - 2 = 19. 7x = 21. x = 3, y = 5", "marks": 4, "topic": "Simultaneous"},
+        {"question": "A sector has angle 72 degrees and radius 10 cm. Find the arc length.", "answer": "Arc = (72/360) x 2pi(10) = (1/5) x 20pi = 4pi = 12.57 cm", "marks": 3, "topic": "Circles"},
+    ]},
+    # AQA 2020
+    {"id": "pp-aqa-2020-1f", "board": "AQA", "year": "2020", "paper_number": 1, "tier": "Foundation", "calculator_allowed": False, "description": "Paper 1 Non-Calculator (Foundation) - November 2020", "link": "https://www.aqa.org.uk/subjects/mathematics/gcse/mathematics-8300", "practice_questions": [
+        {"question": "Work out 3/5 - 1/4", "answer": "12/20 - 5/20 = 7/20", "marks": 2, "topic": "Fractions"},
+        {"question": "Simplify 3x^2 x 4x^3", "answer": "12x^5", "marks": 2, "topic": "Algebra"},
+        {"question": "How many lines of symmetry does a regular hexagon have?", "answer": "6 lines of symmetry", "marks": 1, "topic": "Symmetry"},
+    ]},
+    {"id": "pp-aqa-2020-2h", "board": "AQA", "year": "2020", "paper_number": 2, "tier": "Higher", "calculator_allowed": True, "description": "Paper 2 Calculator (Higher) - November 2020", "link": "https://www.aqa.org.uk/subjects/mathematics/gcse/mathematics-8300", "practice_questions": [
+        {"question": "A population of bacteria doubles every hour. Starting from 500, how many after 6 hours?", "answer": "500 x 2^6 = 500 x 64 = 32,000", "marks": 2, "topic": "Growth"},
+        {"question": "The bearing of B from A is 230 degrees. Find the bearing of A from B.", "answer": "230 - 180 = 050 degrees", "marks": 2, "topic": "Bearings"},
+    ]},
+    # OCR 2021
+    {"id": "pp-ocr-2021-1f", "board": "OCR", "year": "2021", "paper_number": 1, "tier": "Foundation", "calculator_allowed": False, "description": "Paper 1 Non-Calculator (Foundation) - June 2021", "link": "https://www.ocr.org.uk/qualifications/gcse/mathematics-j560-from-2015/", "practice_questions": [
+        {"question": "What is 15% of 60?", "answer": "10% = 6, 5% = 3. 15% = 9", "marks": 2, "topic": "Percentages"},
+        {"question": "Solve: 2x - 5 = 11", "answer": "2x = 16, x = 8", "marks": 2, "topic": "Equations"},
+        {"question": "List all prime numbers between 20 and 30", "answer": "23, 29", "marks": 1, "topic": "Primes"},
+    ]},
+    {"id": "pp-ocr-2021-2f", "board": "OCR", "year": "2021", "paper_number": 2, "tier": "Foundation", "calculator_allowed": True, "description": "Paper 2 Calculator (Foundation) - June 2021", "link": "https://www.ocr.org.uk/qualifications/gcse/mathematics-j560-from-2015/", "practice_questions": [
+        {"question": "A pie chart shows 45 degrees for 'walk to school'. If 160 students surveyed, how many walk?", "answer": "45/360 x 160 = 20 students", "marks": 2, "topic": "Data"},
+        {"question": "Find the circumference of a circle with diameter 14 cm.", "answer": "C = pi x d = pi x 14 = 44.0 cm (1 d.p.)", "marks": 2, "topic": "Circles"},
+    ]},
+    {"id": "pp-ocr-2021-3h", "board": "OCR", "year": "2021", "paper_number": 3, "tier": "Higher", "calculator_allowed": True, "description": "Paper 3 Calculator (Higher) - June 2021", "link": "https://www.ocr.org.uk/qualifications/gcse/mathematics-j560-from-2015/", "practice_questions": [
+        {"question": "Rationalise the denominator of 6/sqrt(3)", "answer": "6/sqrt(3) x sqrt(3)/sqrt(3) = 6sqrt(3)/3 = 2sqrt(3)", "marks": 2, "topic": "Surds"},
+        {"question": "Find the nth term of: 5, 12, 21, 32, ...", "answer": "1st diff: 7, 9, 11. 2nd diff: 2. So starts n^2. n^2 gives 1,4,9,16. Diff: 4,8,12,16. nth term = n^2 + 6n - 2", "marks": 3, "topic": "Sequences"},
+    ]},
+    # OCR 2020
+    {"id": "pp-ocr-2020-1f", "board": "OCR", "year": "2020", "paper_number": 1, "tier": "Foundation", "calculator_allowed": False, "description": "Paper 1 Non-Calculator (Foundation) - November 2020", "link": "https://www.ocr.org.uk/qualifications/gcse/mathematics-j560-from-2015/", "practice_questions": [
+        {"question": "Work out 3.6 x 7", "answer": "3 x 7 = 21, 0.6 x 7 = 4.2. Total = 25.2", "marks": 1, "topic": "Number"},
+        {"question": "A rectangle has area 48 cm^2 and width 6 cm. Find the length.", "answer": "Length = area / width = 48 / 6 = 8 cm", "marks": 1, "topic": "Area"},
+        {"question": "Write 3/4 as a percentage", "answer": "3/4 = 0.75 = 75%", "marks": 1, "topic": "Fractions"},
+    ]},
+    {"id": "pp-ocr-2020-2h", "board": "OCR", "year": "2020", "paper_number": 2, "tier": "Higher", "calculator_allowed": True, "description": "Paper 2 Calculator (Higher) - November 2020", "link": "https://www.ocr.org.uk/qualifications/gcse/mathematics-j560-from-2015/", "practice_questions": [
+        {"question": "OA = (3, 1) and OB = (7, 5). Find the midpoint of AB.", "answer": "Midpoint = ((3+7)/2, (1+5)/2) = (5, 3)", "marks": 2, "topic": "Vectors"},
+        {"question": "A frustum is formed by cutting a cone. Original cone: r=9, h=12. Small cone removed: r=3, h=4. Find the volume of the frustum.", "answer": "Big V = 1/3 pi(81)(12) = 324pi. Small V = 1/3 pi(9)(4) = 12pi. Frustum = 312pi = 980.2 cm^3", "marks": 4, "topic": "Volume"},
+    ]},
+]

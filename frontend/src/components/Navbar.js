@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, BookOpen, FileText, Brain, Calculator, FlaskConical, GraduationCap } from "lucide-react";
+import { Menu, X, BookOpen, FileText, Brain, Calculator, FlaskConical, GraduationCap, CalendarDays } from "lucide-react";
 
 const navLinks = [
   { to: "/topics", label: "Topics", icon: BookOpen },
@@ -8,6 +8,7 @@ const navLinks = [
   { to: "/quiz", label: "Quizzes", icon: Brain },
   { to: "/formulas", label: "Formulas", icon: Calculator },
   { to: "/ai-tutor", label: "AI Tutor", icon: FlaskConical },
+  { to: "/revision-planner", label: "Planner", icon: CalendarDays },
 ];
 
 export default function Navbar() {

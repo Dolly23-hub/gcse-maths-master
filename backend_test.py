@@ -181,6 +181,73 @@ class GCSEMathsAPITester:
             return len(response['response']) > 10  # Should get a meaningful response
         return False
 
+    def test_revision_plan(self):
+        """Test revision plan generation endpoint"""
+        test_plan_data = {
+            "exam_board": "Edexcel",
+            "exam_date": "2026-05-14",
+            "confidence": {
+                "Number": 2,
+                "Algebra": 3,
+                "Ratio & Proportion": 4,
+                "Geometry & Measures": 2,
+                "Probability & Statistics": 3
+            },
+            "study_hours_per_day": 1.5,
+            "use_ai": True
+        }
+        
+        response = self.run_test("Revision Plan Generation", "POST", "revision-plan", 200, test_plan_data)
+        if response:
+            required_fields = ['exam_board', 'exam_date', 'days_remaining', 'weeks_remaining', 
+                             'total_topics', 'weak_areas', 'strong_areas', 'schedule', 'ai_tips']
+            
+            missing_fields = [field for field in required_fields if field not in response]
+            if missing_fields:
+                print(f"   Missing fields: {missing_fields}")
+                return False
+                
+            print(f"   Days remaining: {response.get('days_remaining')}")
+            print(f"   Weeks remaining: {response.get('weeks_remaining')}")
+            print(f"   Total topics: {response.get('total_topics')}")
+            print(f"   Weak areas: {response.get('weak_areas')}")
+            print(f"   Strong areas: {response.get('strong_areas')}")
+            print(f"   Schedule weeks: {len(response.get('schedule', []))}")
+            print(f"   AI tips count: {len(response.get('ai_tips', []))}")
+            
+            return True
+        return False
+
+    def test_past_papers_count(self):
+        """Test that we have the expected number of past papers (38+ total)"""
+        boards = ["Edexcel", "AQA", "OCR"]
+        total_papers = 0
+        board_counts = {}
+        
+        for board in boards:
+            response = self.run_test(f"Count Papers - {board}", "GET", f"past-papers/{board}")
+            if response and 'papers' in response:
+                count = len(response['papers'])
+                board_counts[board] = count
+                total_papers += count
+                print(f"   {board}: {count} papers")
+        
+        print(f"   Total papers across all boards: {total_papers}")
+        
+        # Expected counts based on the review request
+        expected_counts = {"Edexcel": 15, "AQA": 12, "OCR": 11}  # 38 total
+        
+        success = True
+        for board, expected in expected_counts.items():
+            actual = board_counts.get(board, 0)
+            if actual < expected:
+                print(f"   ❌ {board}: Expected {expected}+, got {actual}")
+                success = False
+            else:
+                print(f"   ✅ {board}: {actual} papers (expected {expected}+)")
+        
+        return success and total_papers >= 38
+
     def test_database_seeding(self):
         """Test database seeding endpoint"""
         response = self.run_test("Database Seed", "POST", "seed", 200)
@@ -199,10 +266,12 @@ def main():
         "Topics by Category": tester.test_get_topics_by_category(),
         "Single Topic": tester.test_get_single_topic(),
         "Past Papers": tester.test_past_papers(),
+        "Past Papers Count (38+)": tester.test_past_papers_count(),
         "Quizzes": tester.test_quizzes(),
         "Quiz Answer Check": tester.test_quiz_check(),
         "Formulas": tester.test_formulas(),
         "AI Tutor": tester.test_ai_tutor(),
+        "Revision Plan": tester.test_revision_plan(),
         # Skip seeding for now as it might interfere with existing data
         # "Database Seed": tester.test_database_seeding(),
     }

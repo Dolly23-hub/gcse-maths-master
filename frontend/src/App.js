@@ -9,6 +9,7 @@ import PastPapersPage from "@/pages/PastPapersPage";
 import QuizPage from "@/pages/QuizPage";
 import FormulaSheetPage from "@/pages/FormulaSheetPage";
 import AITutorPage from "@/pages/AITutorPage";
+import RevisionPlannerPage from "@/pages/RevisionPlannerPage";
 import { Toaster } from "sonner";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
             <Route path="/quiz/:topicId" element={<QuizPage />} />
             <Route path="/formulas" element={<FormulaSheetPage />} />
             <Route path="/ai-tutor" element={<AITutorPage />} />
+            <Route path="/revision-planner" element={<RevisionPlannerPage />} />
           </Routes>
         </main>
         <Toaster position="bottom-right" richColors />
