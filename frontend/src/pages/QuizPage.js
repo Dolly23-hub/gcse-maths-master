@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { Brain, CheckCircle, XCircle, ArrowRight, RotateCcw, Trophy, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { saveQuizResult, getQuizScore } from "@/utils/progress";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -109,6 +110,9 @@ export default function QuizPage() {
   const nextQuestion = () => {
     if (currentIndex + 1 >= questions.length) {
       setQuizComplete(true);
+      // Save progress
+      const quizTopicId = topicId || "mixed";
+      saveQuizResult(quizTopicId, score, questions.length);
     } else {
       setCurrentIndex((i) => i + 1);
       setSelectedAnswer(null);

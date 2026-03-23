@@ -4,6 +4,7 @@ import axios from "axios";
 import ReactMarkdown from "react-markdown";
 import { ArrowLeft, Brain, Lightbulb, CheckCircle, ChevronDown, ChevronUp, BookOpen } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { markTopicViewed } from "@/utils/progress";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -29,6 +30,7 @@ export default function TopicDetailPage() {
     try {
       const res = await axios.get(`${API}/topics/${topicId}`);
       setTopic(res.data);
+      markTopicViewed(topicId);
     } catch (e) {
       console.error("Error fetching topic:", e);
     } finally {

@@ -1,13 +1,13 @@
-# GCSE Maths Master - PRD
+# GCSE Maths Master - PRD (Final Version)
 
 ## Problem Statement
 Build a comprehensive GCSE Maths revision app for UK students covering all exam boards (Edexcel, AQA, OCR) with topic explanations, past papers, quizzes, formulas, and AI-powered tutoring.
 
 ## Architecture
-- **Frontend**: React + Tailwind CSS + Shadcn UI (Neo-Brutalist design)
+- **Frontend**: React + Tailwind CSS + Shadcn UI (Neo-Brutalist Notebook design)
 - **Backend**: FastAPI + MongoDB
 - **AI Integration**: OpenAI GPT-5.2 via Emergent LLM Key
-- **Design**: Neo-Brutalist Notebook theme with bold borders, hard shadows
+- **Design**: Colourful Neo-Brutalist theme with bold borders, hard shadows, section-specific accent colours
 
 ## User Personas
 1. **GCSE Students (14-16)**: Primary users needing clear explanations and practice
@@ -15,35 +15,46 @@ Build a comprehensive GCSE Maths revision app for UK students covering all exam 
 3. **Parents**: Helping children with revision
 
 ## What's Been Implemented (Feb 2026)
-- Homepage with hero, stats, features, category cards, exam board cards
-- Topics page: 19 topics across 5 categories with search/filter
-- Topic detail pages with markdown explanations, key points, worked examples
-- Past Papers Hub: Tabbed interface (Edexcel/AQA/OCR) with expandable practice questions
-- Interactive Quiz system with scoring, explanations, mixed/topic-specific modes
-- Formula Sheet: 20+ formulas grouped by category with examples
-- AI Tutor: Real-time GPT-5.2 powered chat with suggested questions
-- Responsive mobile navigation
-- Seeded database with rich content
+### Content
+- **33 topics** across 5 categories (Number, Algebra, Ratio & Proportion, Geometry & Measures, Probability & Statistics)
+- **84 quiz questions** with instant feedback and explanations
+- **21 past papers** across Edexcel (8), AQA (7), OCR (6) with practice questions
+- **30 key formulas** with descriptions and usage examples
+- Topics include Higher tier content: Surds, Circle Theorems, Vectors, Functions, Algebraic Proof
 
-## Prioritized Backlog
-### P0 (Critical)
-- All core features implemented and tested
+### Features
+- **Topic Detail Pages**: Markdown-rendered explanations, key points, expandable worked examples
+- **Past Papers Hub**: Tabbed interface (Edexcel/AQA/OCR), expandable papers with practice questions
+- **Interactive Quiz System**: Topic-specific or mixed mode, scoring, explanations, results screen
+- **Formula Sheet**: Searchable, expandable formulas grouped by category
+- **AI Maths Tutor**: GPT-5.2 powered chat with suggested questions and topic context
+- **Exam Countdown**: 2026 GCSE exam dates with days remaining
+- **Progress Tracking**: LocalStorage-based topic viewing and quiz score tracking
+- **Study Tips**: Revision advice section on homepage
+- **Mobile Responsive**: Full mobile navigation with hamburger menu
 
-### P1 (High Priority)
-- More quiz questions per topic
-- More past paper years and questions
-- Progress tracking with local storage
-- Exam countdown timer
+### Design
+- Colourful section backgrounds (blue hero, dark countdown, violet stats, amber features, green categories, pink exam boards, sky study tips, blue CTA)
+- Neo-Brutalist cards with bold borders and hard shadows
+- Fonts: Space Grotesk (headings), Outfit (body), JetBrains Mono (formulas/code)
+- Exam board accent colours: Edexcel (blue), AQA (pink), OCR (orange)
 
-### P2 (Nice to Have)
-- Topic bookmarking
-- Study planner/calendar
-- Flashcard mode for formulas
-- Dark mode toggle
-- Share results on social media
+## API Endpoints
+- GET /api/stats - Dynamic content counts
+- GET /api/topics - All topics
+- GET /api/topics/{id} - Topic detail
+- GET /api/topics/category/{category} - Topics by category
+- GET /api/past-papers/{board} - Papers by exam board
+- GET /api/quizzes - All quiz questions
+- GET /api/quizzes/{topic_id} - Topic-specific quizzes
+- POST /api/quiz/check - Validate quiz answer
+- GET /api/formulas - All formulas
+- GET /api/formulas/category/{category} - Formulas by category
+- POST /api/ai-tutor - AI-powered explanations
+- POST /api/seed - Seed database
 
-## Next Tasks
-1. Add more content (quiz questions, past paper questions)
-2. Implement local storage progress tracking
-3. Add exam countdown feature
-4. Expand Higher tier content
+## Deployment Ready
+- All lint checks passing (Python + JavaScript)
+- All API endpoints verified
+- All pages tested (desktop + mobile)
+- Database seeded with comprehensive content

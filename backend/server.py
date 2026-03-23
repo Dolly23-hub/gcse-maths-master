@@ -1119,7 +1119,39 @@ Example: If a line has gradient 2, the perpendicular gradient is -1/2""",
     for f in formulas_data:
         await db.formulas.insert_one(f)
 
-    return {"message": "Database seeded successfully", "topics": len(topics_data), "quizzes": len(quiz_data), "papers": len(past_papers_data), "formulas": len(formulas_data)}
+    # --- INSERT ADDITIONAL CONTENT ---
+    from seed_data import ADDITIONAL_TOPICS, ADDITIONAL_QUIZZES, ADDITIONAL_PAST_PAPERS, ADDITIONAL_FORMULAS
+
+    for topic in ADDITIONAL_TOPICS:
+        await db.topics.insert_one(topic)
+    for q in ADDITIONAL_QUIZZES:
+        await db.quizzes.insert_one(q)
+    for paper in ADDITIONAL_PAST_PAPERS:
+        await db.past_papers.insert_one(paper)
+    for f in ADDITIONAL_FORMULAS:
+        await db.formulas.insert_one(f)
+
+    total_topics = len(topics_data) + len(ADDITIONAL_TOPICS)
+    total_quizzes = len(quiz_data) + len(ADDITIONAL_QUIZZES)
+    total_papers = len(past_papers_data) + len(ADDITIONAL_PAST_PAPERS)
+    total_formulas = len(formulas_data) + len(ADDITIONAL_FORMULAS)
+
+    return {"message": "Database seeded successfully", "topics": total_topics, "quizzes": total_quizzes, "papers": total_papers, "formulas": total_formulas}
+
+@api_router.get("/stats")
+async def get_stats():
+    topics_count = await db.topics.count_documents({})
+    quizzes_count = await db.quizzes.count_documents({})
+    papers_count = await db.past_papers.count_documents({})
+    formulas_count = await db.formulas.count_documents({})
+    categories = await db.topics.distinct("category")
+    return {
+        "topics": topics_count,
+        "quizzes": quizzes_count,
+        "papers": papers_count,
+        "formulas": formulas_count,
+        "categories": len(categories)
+    }
 
 # Include router
 app.include_router(api_router)

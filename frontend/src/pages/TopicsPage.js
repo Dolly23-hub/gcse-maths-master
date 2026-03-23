@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import axios from "axios";
-import { BookOpen, ChevronRight, Search, Filter } from "lucide-react";
+import { BookOpen, ChevronRight, Search, Filter, CheckCircle2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { getTopicsViewed, getQuizScore } from "@/utils/progress";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -125,34 +126,52 @@ export default function TopicsPage() {
                     <Badge variant="secondary" className="font-mono text-xs">{catTopics.length} topics</Badge>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {catTopics.map((topic) => (
-                      <Link
-                        key={topic.id}
-                        to={`/topics/${topic.id}`}
-                        data-testid={`topic-card-${topic.id}`}
-                        className={`neo-card cursor-pointer group ${colors.border}`}
-                      >
-                        <div className="flex items-start justify-between mb-3">
-                          <div className={`w-10 h-10 rounded-lg ${colors.bg} ${colors.text} flex items-center justify-center border-2 border-black`}>
-                            <BookOpen size={18} />
+                    {catTopics.map((topic) => {
+                      const viewed = getTopicsViewed().includes(topic.id);
+                      const quizResult = getQuizScore(topic.id);
+                      return (
+                        <Link
+                          key={topic.id}
+                          to={`/topics/${topic.id}`}
+                          data-testid={`topic-card-${topic.id}`}
+                          className={`neo-card cursor-pointer group ${colors.border}`}
+                        >
+                          <div className="flex items-start justify-between mb-3">
+                            <div className={`w-10 h-10 rounded-lg ${colors.bg} ${colors.text} flex items-center justify-center border-2 border-black`}>
+                              <BookOpen size={18} />
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {viewed && (
+                                <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center" title="Studied">
+                                  <CheckCircle2 size={14} className="text-green-600" />
+                                </div>
+                              )}
+                              <Badge variant="outline" className="font-mono text-xs border-2">{topic.tier}</Badge>
+                            </div>
                           </div>
-                          <Badge variant="outline" className="font-mono text-xs border-2">{topic.tier}</Badge>
-                        </div>
-                        <h3 className="font-heading text-lg font-bold mb-2 group-hover:underline">{topic.title}</h3>
-                        <p className="text-sm text-neutral-500 leading-relaxed line-clamp-2">{topic.description}</p>
-                        <div className="mt-4 flex items-center justify-between">
-                          <div className="flex items-center gap-1">
-                            {[1, 2, 3, 4, 5].map((d) => (
-                              <div
-                                key={d}
-                                className={`w-2 h-2 rounded-full ${d <= topic.difficulty ? colors.pill : "bg-neutral-200"}`}
-                              />
-                            ))}
+                          <h3 className="font-heading text-lg font-bold mb-2 group-hover:underline">{topic.title}</h3>
+                          <p className="text-sm text-neutral-500 leading-relaxed line-clamp-2">{topic.description}</p>
+                          <div className="mt-4 flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <div className="flex items-center gap-1">
+                                {[1, 2, 3, 4, 5].map((d) => (
+                                  <div
+                                    key={d}
+                                    className={`w-2 h-2 rounded-full ${d <= topic.difficulty ? colors.pill : "bg-neutral-200"}`}
+                                  />
+                                ))}
+                              </div>
+                              {quizResult && (
+                                <span className="text-xs font-mono text-green-600 font-bold ml-1">
+                                  {quizResult.score}/{quizResult.total}
+                                </span>
+                              )}
+                            </div>
+                            <ChevronRight size={18} className="text-neutral-400 group-hover:text-black transition-colors" />
                           </div>
-                          <ChevronRight size={18} className="text-neutral-400 group-hover:text-black transition-colors" />
-                        </div>
-                      </Link>
-                    ))}
+                        </Link>
+                      );
+                    })}
                   </div>
                 </div>
               );
