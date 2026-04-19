@@ -39,6 +39,11 @@ class TopicBase(BaseModel):
     key_points: List[str] = []
     difficulty: int = 1
     order: int = 0
+    # Guided learning journey fields
+    video_id: Optional[str] = None
+    big_idea: Optional[str] = None
+    visual_example: Optional[str] = None
+    step_by_step: List[str] = []
 
 class QuizQuestion(BaseModel):
     model_config = ConfigDict(extra="ignore")
@@ -347,6 +352,407 @@ async def seed_database():
     await db.quizzes.delete_many({})
     await db.past_papers.delete_many({})
     await db.formulas.delete_many({})
+
+    # --- TOPICS ---
+    # Guided learning journey enrichments (YouTube video + Big Idea + Visual Example + Steps)
+    enrichments = {
+        "num-1": {
+            "video_id": "Iq-6CjlEUW4",
+            "big_idea": "Fractions, decimals and percentages are three languages that describe the SAME number — swap freely between them.",
+            "visual_example": "**Convert `3/4` through all three forms**\n\n```\n3/4  ──►  3 ÷ 4 = 0.75  ──►  0.75 × 100 = 75%\n```\n\n| Form        | Value |\n|-------------|-------|\n| Fraction    | 3/4   |\n| Decimal     | 0.75  |\n| Percentage  | 75%   |",
+            "step_by_step": [
+                "Identify the form you have (fraction, decimal, or percentage).",
+                "Fraction → Decimal: divide the top (numerator) by the bottom (denominator).",
+                "Decimal → Percentage: multiply by 100 (slide the decimal point 2 places right).",
+                "Percentage → Fraction: write over 100, then simplify using the HCF.",
+                "Always sanity-check by picking a known benchmark (½ = 0.5 = 50%).",
+            ],
+        },
+        "num-2": {
+            "video_id": "cxGyZ3Yx9ow",
+            "big_idea": "Powers are shorthand for repeated multiplication; standard form is shorthand for very big or very small numbers.",
+            "visual_example": "**Write `0.000 045` in standard form**\n\n```\n0.000045\n └─┴─┴─┴─┴─►  move 5 places right\n      4.5\n```\n\n**Answer:** `4.5 × 10⁻⁵` (negative because the number is small).",
+            "step_by_step": [
+                "Place the decimal point after the first non-zero digit.",
+                "Count how many places the decimal moved.",
+                "If the original was LARGE (>10), the power is positive.",
+                "If the original was SMALL (<1), the power is negative.",
+                "Write as: A × 10ⁿ where 1 ≤ A < 10.",
+            ],
+        },
+        "num-3": {
+            "video_id": "oK-EFDLeEqc",
+            "big_idea": "Every whole number has a unique fingerprint of prime factors — use this fingerprint to unlock HCF and LCM.",
+            "visual_example": "**Find the HCF and LCM of 24 and 36**\n\n```\n24 = 2 × 2 × 2 × 3   =  2³ × 3\n36 = 2 × 2 × 3 × 3   =  2² × 3²\n\nHCF  =  2² × 3      =  12   (lowest powers of SHARED primes)\nLCM  =  2³ × 3²     =  72   (highest powers of ALL primes)\n```",
+            "step_by_step": [
+                "Build a factor tree to break each number into prime factors.",
+                "Write each number as a product of primes in index form.",
+                "HCF: multiply SHARED primes, using the LOWEST power that appears.",
+                "LCM: multiply ALL primes, using the HIGHEST power that appears.",
+                "Check: HCF × LCM should equal the two numbers multiplied.",
+            ],
+        },
+        "num-4": {
+            "video_id": "OP5Gokb6BV8",
+            "big_idea": "Rounding keeps numbers tidy, but the true value always lives inside a small range called its error interval.",
+            "visual_example": "**A length is given as `4.7 cm` to 1 d.p. Find the error interval.**\n\n```\n     4.65 cm  ─── 4.70 cm ─── 4.75 cm\n      ▲           (given)        ▲\n   lower bound               upper bound\n     (≤ included)           (< NOT included)\n```\n\n**Error interval:** `4.65 ≤ length < 4.75`",
+            "step_by_step": [
+                "Decide the degree of accuracy (e.g. 1 d.p., nearest 10).",
+                "Halve that degree — this is your ± value.",
+                "Lower bound = given value − half (USE ≤).",
+                "Upper bound = given value + half (USE <).",
+                "Write: lower bound ≤ value < upper bound.",
+            ],
+        },
+        "alg-1": {
+            "video_id": "ZJA1qz4XovY",
+            "big_idea": "Expanding multiplies everything in the bracket; factorising reverses this by pulling the common factor back OUT.",
+            "visual_example": "**Expand and simplify `(x + 3)(x + 5)` using FOIL**\n\n```\n  (x + 3)(x + 5)\n   │   │  │   │\n   └───┼──┘   │   F: x × x   = x²\n       └──────┘   O: x × 5   = 5x\n   ┌───┼──────┐   I: 3 × x   = 3x\n   │   │      │   L: 3 × 5   = 15\n   └───┘\n\nx² + 5x + 3x + 15  =  x² + 8x + 15\n```",
+            "step_by_step": [
+                "Label the brackets: First, Outer, Inner, Last (FOIL).",
+                "Multiply each FOIL pair carefully (watch the signs!).",
+                "Write out all four terms.",
+                "Collect like terms in the middle.",
+                "Simplify into the form ax² + bx + c.",
+            ],
+        },
+        "alg-2": {
+            "video_id": "30S7WxKcPwg",
+            "big_idea": "An equation is a balanced scale — whatever you do to one side, you MUST do to the other.",
+            "visual_example": "**Solve `4(x + 2) = 3(x + 5)`**\n\n```\n    4(x + 2)  =  3(x + 5)\n     4x + 8   =  3x + 15      (expand)\n        x + 8 =  15            (subtract 3x)\n            x =  7             (subtract 8)\n\nCheck: 4(7+2) = 36 ✓   3(7+5) = 36 ✓\n```",
+            "step_by_step": [
+                "Expand any brackets on both sides.",
+                "Collect x-terms on ONE side (subtract the smaller one).",
+                "Move constants to the OTHER side.",
+                "Divide both sides by the coefficient of x.",
+                "Substitute back to check your answer works.",
+            ],
+        },
+        "alg-3": {
+            "video_id": "phlus4x0UqM",
+            "big_idea": "Two equations + two unknowns = one unique solution point where the lines meet.",
+            "visual_example": "**Solve `3x + 2y = 16` and `5x + 2y = 22` by elimination**\n\n```\n   5x + 2y = 22\n − (3x + 2y = 16)      ← SUBTRACT (same 2y cancels)\n ─────────────────\n   2x       = 6\n        x  = 3\n\nSub into eq1:  3(3) + 2y = 16\n                    2y   = 7\n                     y   = 3.5\n```",
+            "step_by_step": [
+                "Line the two equations up, one above the other.",
+                "Make the coefficient of one variable match (multiply if needed).",
+                "Same signs → SUBTRACT. Different signs → ADD.",
+                "Solve the resulting single-variable equation.",
+                "Substitute back into an original equation to find the second variable.",
+            ],
+        },
+        "alg-4": {
+            "video_id": "J9op5M4uUHg",
+            "big_idea": "Linear sequences grow by a fixed step — spot the step and you own the whole pattern.",
+            "visual_example": "**Find the nth term of `5, 9, 13, 17, …`**\n\n```\nTerms:        5   9  13  17\n              └─┬─┘└─┬─┘└─┬─┘\nDifferences:   +4   +4   +4    ← common difference d = 4\n\nnth term = dn + (a − d)\n         = 4n + (5 − 4)\n         = 4n + 1\n\nCheck: n=1 → 5 ✓   n=4 → 17 ✓\n```",
+            "step_by_step": [
+                "Find the common difference d between consecutive terms.",
+                "Identify the first term a.",
+                "Use the formula: nth term = dn + (a − d).",
+                "Simplify the constant.",
+                "Verify by plugging in n = 1, 2, 3.",
+            ],
+        },
+        "alg-5": {
+            "video_id": "wJ_tLEwEEi8",
+            "big_idea": "Every quadratic equation has up to two solutions — factorise if you can, use the formula when you can't.",
+            "visual_example": "**Solve `x² + 5x + 6 = 0` by factorising**\n\n```\nFind two numbers that:\n   × give +6  and  + give +5     →  +2 and +3\n\n   x² + 5x + 6 = 0\n  (x + 2)(x + 3) = 0\n\nEither  x + 2 = 0  →  x = −2\nOr      x + 3 = 0  →  x = −3\n```",
+            "step_by_step": [
+                "Make one side = 0 (standard form: ax² + bx + c = 0).",
+                "Try to factorise into (x + p)(x + q) where p×q = c and p+q = b.",
+                "Set each bracket equal to zero.",
+                "Solve the two tiny linear equations.",
+                "If it won't factorise, reach for the quadratic formula.",
+            ],
+        },
+        "alg-6": {
+            "video_id": "WdSXjD0bxI4",
+            "big_idea": "Every straight line lives by the rule `y = mx + c` — m is the slope, c is where it crosses the y-axis.",
+            "visual_example": "**Find the equation of the line through `(1, 3)` and `(4, 9)`**\n\n```\nGradient  m = (9 − 3) / (4 − 1) = 6 / 3 = 2\n\nUsing (1, 3):   y  = mx + c\n                3  = 2(1) + c\n                c  = 1\n\nEquation:   y = 2x + 1\n```",
+            "step_by_step": [
+                "Pick two points on the line (x₁, y₁) and (x₂, y₂).",
+                "Gradient m = (y₂ − y₁) / (x₂ − x₁).",
+                "Substitute m and one point into y = mx + c to find c.",
+                "Write the full equation y = mx + c.",
+                "Sanity check by plugging the other point back in.",
+            ],
+        },
+        "rat-1": {
+            "video_id": "cflZnf9H5l4",
+            "big_idea": "A ratio splits a total into equal-sized 'parts' — find the value of ONE part and you've unlocked everything.",
+            "visual_example": "**Share £240 in the ratio `3 : 5 : 4`**\n\n```\nTotal parts = 3 + 5 + 4 = 12\nOne part    = 240 ÷ 12 = £20\n\n  3 parts  →  3 × 20 = £60\n  5 parts  →  5 × 20 = £100\n  4 parts  →  4 × 20 = £80\n                       ─────\nCheck total            £240 ✓\n```",
+            "step_by_step": [
+                "Add all the parts of the ratio to get the TOTAL parts.",
+                "Divide the total quantity by total parts → value of ONE part.",
+                "Multiply each share of the ratio by 'one part'.",
+                "Add your answers back up to double-check the total.",
+                "State units (£, kg, cm, …) clearly.",
+            ],
+        },
+        "rat-2": {
+            "video_id": "LAArcKjVVaM",
+            "big_idea": "Compound interest is interest that earns interest — multiply by (1 + r/100) once for every year.",
+            "visual_example": "**£250,000 house grows by 5% per year. Worth after 3 years?**\n\n```\nMultiplier:  1 + 5/100 = 1.05\n\nValue = 250,000 × 1.05 × 1.05 × 1.05\n      = 250,000 × 1.05³\n      = 250,000 × 1.157625\n      = £289,406.25\n```",
+            "step_by_step": [
+                "Turn the rate into a multiplier: 1 + r/100 (or 1 − r/100 for decrease).",
+                "Raise the multiplier to the power of the number of years.",
+                "Multiply the original amount by that result.",
+                "Round sensibly (usually 2 d.p. for money).",
+                "Compare with simple interest to see the compounding effect.",
+            ],
+        },
+        "rat-3": {
+            "video_id": "dHVK7IeLGT8",
+            "big_idea": "Speed, distance and time are locked in a triangle — cover the one you want, the formula is what's left.",
+            "visual_example": "**A car travels 150 km in 2.5 hours. Find the average speed.**\n\n```\n       ┌─────┐\n       │  D  │       cover S → S = D / T\n       ├──┬──┤       cover D → D = S × T\n       │S │T │       cover T → T = D / S\n       └──┴──┘\n\nSpeed = Distance / Time\n      = 150 / 2.5\n      = 60 km/h\n```",
+            "step_by_step": [
+                "Identify which quantity you need to find.",
+                "Cover that letter in the S/D/T triangle.",
+                "The remaining letters give the formula.",
+                "Check that units match (convert minutes to hours if needed).",
+                "State your answer with the correct unit (km/h, m/s, mph).",
+            ],
+        },
+        "geo-1": {
+            "video_id": "gVo8ZrtlSp0",
+            "big_idea": "Every polygon's interior angles add up to `(n − 2) × 180°` — the exterior angles ALWAYS total 360°.",
+            "visual_example": "**Find the interior angle of a regular octagon (n = 8)**\n\n```\nMethod A — Interior:\n   Sum  = (8 − 2) × 180° = 1080°\n   Each = 1080° ÷ 8     = 135°\n\nMethod B — Exterior:\n   Each exterior = 360° ÷ 8 = 45°\n   Interior      = 180° − 45° = 135°\n```",
+            "step_by_step": [
+                "Count the number of sides, n.",
+                "Sum of interior angles = (n − 2) × 180°.",
+                "For REGULAR polygons, divide by n to find each interior angle.",
+                "Alternative: each exterior angle = 360° ÷ n.",
+                "Interior + exterior always = 180° at each vertex.",
+            ],
+        },
+        "geo-2": {
+            "video_id": "iWLVTy_rGjs",
+            "big_idea": "In any right-angled triangle, `a² + b² = c²` — and SOHCAHTOA unlocks every angle and side beyond that.",
+            "visual_example": "**Find the hypotenuse of a right triangle with legs 5 cm and 12 cm**\n\n```\n        │╲\n        │ ╲  c  (hypotenuse)\n     5  │  ╲\n        │   ╲\n        └────╲\n          12\n\nc² = 5² + 12² = 25 + 144 = 169\nc  = √169 = 13 cm\n```",
+            "step_by_step": [
+                "Label the triangle: Hypotenuse (opposite right angle), Opposite, Adjacent.",
+                "Finding the longest side? Use c = √(a² + b²).",
+                "Finding a shorter side? Use a = √(c² − b²).",
+                "For angles or non-hypotenuse sides with an angle, switch to SOHCAHTOA.",
+                "Always check the hypotenuse is the longest side in the answer.",
+            ],
+        },
+        "geo-3": {
+            "video_id": "Of8p1SfOcR0",
+            "big_idea": "2D shapes have area (square units); 3D shapes have volume (cubic units) — match the formula to the shape.",
+            "visual_example": "**Volume of a cylinder with r = 4 cm and h = 10 cm**\n\n```\n        ___________\n       /           \\       V = π r² × h\n      │     r=4     │       (area of circle × height)\n      │             │\n      │    h = 10   │       = π × 16 × 10\n      │             │       = 160π\n       \\___________/        ≈ 502.7 cm³\n```",
+            "step_by_step": [
+                "Identify the shape and pick the correct formula.",
+                "List the dimensions you're given.",
+                "Substitute carefully — watch powers (r² ≠ 2r).",
+                "Keep π exact until the final step.",
+                "Finish with the correct unit (cm², cm³, m², m³…).",
+            ],
+        },
+        "geo-4": {
+            "video_id": "fwv7e5OyuzA",
+            "big_idea": "There are four ways to move a shape: translate, reflect, rotate, enlarge — each needs a FULL description.",
+            "visual_example": "**Describe: triangle A shifted 3 right and 2 up gives triangle B**\n\n```\nIt's a TRANSLATION.\n\n         ┌ 3 ┐\nVector = │   │       (3 right, 2 up)\n         └ 2 ┘\n\nTranslation by the column vector ⎛3⎞\n                                 ⎝2⎠\n```",
+            "step_by_step": [
+                "Has size changed? → enlargement (give scale factor + centre).",
+                "Has shape flipped? → reflection (give mirror line).",
+                "Has shape turned? → rotation (give angle + direction + centre).",
+                "Has shape slid? → translation (give column vector).",
+                "State EVERYTHING the transformation requires — full marks hinge on it.",
+            ],
+        },
+        "sta-1": {
+            "video_id": "PYEvSuz1Dxo",
+            "big_idea": "Probability lives between 0 and 1 — multiply along tree branches for 'AND', add separate paths for 'OR'.",
+            "visual_example": "**A bag has 3 red, 5 blue and 2 green balls. Find P(not blue).**\n\n```\nTotal balls = 3 + 5 + 2 = 10\n\nP(blue)     = 5/10 = 1/2\nP(not blue) = 1 − 1/2 = 1/2\n\nOr directly:  P(not blue) = (3 + 2)/10 = 5/10 = 1/2\n```",
+            "step_by_step": [
+                "Count total outcomes.",
+                "Count favourable outcomes.",
+                "P(event) = favourable / total.",
+                "P(not event) = 1 − P(event).",
+                "For combined events, draw a tree diagram — multiply along, add between.",
+            ],
+        },
+        "sta-2": {
+            "video_id": "x8oPXIrLMc0",
+            "big_idea": "Mean, median and mode tell three different stories — the range tells you how spread out the data is.",
+            "visual_example": "**Find the mean, median and mode of: `4, 7, 2, 9, 3, 5, 8, 7`**\n\n```\nOrdered:  2, 3, 4, 5, 7, 7, 8, 9\n\nMean   = (2+3+4+5+7+7+8+9) ÷ 8 = 45 ÷ 8 = 5.625\nMedian = middle pair = (5 + 7) ÷ 2 = 6\nMode   = 7   (appears twice)\nRange  = 9 − 2 = 7\n```",
+            "step_by_step": [
+                "Mean: add all values, divide by how many.",
+                "Median: put IN ORDER first, then pick the middle (or mean of middle pair).",
+                "Mode: the most frequent value (can be none, one, or many).",
+                "Range: largest − smallest (a measure of spread, NOT an average).",
+                "For grouped data, use midpoints to estimate the mean.",
+            ],
+        },
+        "num-5": {
+            "video_id": "ndU_cCbPAm4",
+            "big_idea": "A surd is an irrational square root kept in EXACT form — simplify by pulling out square factors.",
+            "visual_example": "**Simplify `√72`**\n\n```\n72 = 36 × 2        (36 is the biggest square factor)\n\n√72 = √(36 × 2)\n    = √36 × √2\n    =   6 × √2\n    =  6√2\n```",
+            "step_by_step": [
+                "Find the largest SQUARE factor of the number inside the root.",
+                "Split the surd: √(a × b) = √a × √b.",
+                "Take the square root of the square factor.",
+                "Leave the irrational part as a surd (don't decimalise).",
+                "To rationalise a denominator, multiply top AND bottom by the surd.",
+            ],
+        },
+        "num-6": {
+            "video_id": "DNKqOTp7PDI",
+            "big_idea": "Your calculator is a tool, not a magic wand — use brackets, memory and Ans to stay in control of the order of operations.",
+            "visual_example": "**Calculate `16.9 / (105 × 0.625)` accurately**\n\n```\nPress:   ( 105 × 0.625 ) =        → 65.625\nPress:   16.9 ÷ Ans       =        → 0.2575...\n\nAlways put the denominator in BRACKETS first.\nRound at the END, not during the calculation.\n```",
+            "step_by_step": [
+                "Use brackets around any denominator or grouped expression.",
+                "Use the Ans / memory button to carry full precision forward.",
+                "For powers, use the xʸ button; for roots, the √ or ʸ√x button.",
+                "Keep answers EXACT as long as possible; round only the final value.",
+                "Know the fraction button — it keeps answers tidy and exam-ready.",
+            ],
+        },
+        "alg-7": {
+            "video_id": "aexvnpH-jhI",
+            "big_idea": "Solve inequalities like equations — BUT flip the sign whenever you multiply or divide by a negative.",
+            "visual_example": "**Solve `3x − 5 < 7` and show on a number line**\n\n```\n3x − 5  <  7\n   3x   <  12       (+5 to both sides)\n    x   <  4        (÷3 — sign stays)\n\n──────○═══►          (○ = NOT included because <)\n      4\n```",
+            "step_by_step": [
+                "Treat the inequality like an equation to start.",
+                "Isolate x using +, −, × and ÷.",
+                "If you multiply or divide by a NEGATIVE, FLIP the inequality sign.",
+                "Show the answer on a number line: open ○ for <, >; closed ● for ≤, ≥.",
+                "For double inequalities (a < x < b), do the same to ALL three parts.",
+            ],
+        },
+        "alg-8": {
+            "video_id": "eWP15jyatIo",
+            "big_idea": "A function is a machine: put x in, get f(x) out — iteration feeds the output back in, again and again.",
+            "visual_example": "**If `f(x) = 2x + 3`, find `f(5)` and iterate `xₙ₊₁ = (10 − xₙ) / 2` starting from x₀ = 4**\n\n```\nf(5)   = 2(5) + 3 = 13\n\nIteration:\nx₁ = (10 − 4) / 2 = 3\nx₂ = (10 − 3) / 2 = 3.5\nx₃ = (10 − 3.5) / 2 = 3.25\n...converging to x = 10/3 ≈ 3.333\n```",
+            "step_by_step": [
+                "Substitute carefully into f(x) — everywhere you see x, put the value in brackets.",
+                "For composite f(g(x)): work INSIDE-OUT — do g first, feed result into f.",
+                "For the inverse f⁻¹(x): swap x and y, then rearrange to make y the subject.",
+                "For iteration, plug xₙ into the formula to get xₙ₊₁.",
+                "Keep full calculator accuracy — round only at the very end.",
+            ],
+        },
+        "alg-9": {
+            "video_id": "pd9Q-e1JvtE",
+            "big_idea": "To PROVE a statement, write any number with a variable (like n), manipulate algebraically, and show the result MUST be true.",
+            "visual_example": "**Prove that the sum of 3 consecutive integers is always divisible by 3**\n\n```\nLet the three consecutive integers be   n,  n+1,  n+2\n\nSum  =  n + (n+1) + (n+2)\n     =  3n + 3\n     =  3(n + 1)\n\n3 × (any integer)  is  divisible by 3.      ∎\n```",
+            "step_by_step": [
+                "Choose smart algebraic expressions: n for any integer, 2n for even, 2n+1 for odd.",
+                "Form the expression the question asks about.",
+                "Expand, collect and factor out the relevant factor.",
+                "State the conclusion clearly (e.g. '…therefore it is divisible by 3').",
+                "End with QED or ∎ for a professional finish.",
+            ],
+        },
+        "rat-4": {
+            "video_id": "kcOwC7uqJNE",
+            "big_idea": "Direct proportion: `y = kx`. Inverse proportion: `y = k/x`. Find `k` FIRST — everything else follows.",
+            "visual_example": "**`y` is directly proportional to `x²`. When `x = 2`, `y = 20`. Find `y` when `x = 5`**\n\n```\ny ∝ x²   →   y = k x²\n\nSub values:  20 = k × 2²\n              20 = 4k\n               k = 5\n\nFormula:     y = 5x²\n\nWhen x = 5:  y = 5 × 25 = 125\n```",
+            "step_by_step": [
+                "Translate the words: ∝ becomes = k × (expression).",
+                "Substitute the given pair to find the constant k.",
+                "Write the complete formula y = k × (expression).",
+                "Use the formula to answer the actual question.",
+                "Check: direct → both increase; inverse → one up, the other down.",
+            ],
+        },
+        "rat-5": {
+            "video_id": "oUcjmGThMdc",
+            "big_idea": "Growth/decay multiplies by the SAME factor each period — a rate above 1 grows, below 1 decays.",
+            "visual_example": "**A car worth £12,000 depreciates by 15% per year. What's it worth after 4 years?**\n\n```\nMultiplier:  1 − 15/100  =  0.85\n\nValue =  12,000 × 0.85⁴\n      =  12,000 × 0.52200625\n      =  £6,264.08  (to 2 d.p.)\n```",
+            "step_by_step": [
+                "Identify the per-period rate and turn it into a multiplier.",
+                "Growth: multiplier > 1 (e.g. +5% → 1.05).",
+                "Decay: multiplier < 1 (e.g. −20% → 0.80).",
+                "Raise the multiplier to the power of the number of periods.",
+                "Multiply by the starting amount for the final value.",
+            ],
+        },
+        "geo-5": {
+            "video_id": "vgMSLsos7Ew",
+            "big_idea": "Circle theorems give you FREE angles — spot the shape (radius, tangent, cyclic quad, semicircle…) and the rule names itself.",
+            "visual_example": "**Key circle theorems at a glance**\n\n```\n• Angle at centre  =  2 × angle at circumference (same arc)\n• Angle in a semicircle  =  90°\n• Angles in same segment  are EQUAL\n• Opposite angles of a cyclic quadrilateral  sum to 180°\n• Tangent  ⟂  radius at point of contact\n• Two tangents from a point  are EQUAL length\n• Alternate segment: tangent-chord angle = angle in alternate segment\n```",
+            "step_by_step": [
+                "Mark the radius, centre, tangent or chord on the diagram.",
+                "Spot the shape: semicircle? cyclic quadrilateral? same arc?",
+                "Quote the theorem you are using BY NAME in your working.",
+                "Apply the rule to find the unknown angle.",
+                "Check everything adds up: triangles = 180°, quadrilaterals = 360°.",
+            ],
+        },
+        "geo-6": {
+            "video_id": "HA6gjFLm2Gk",
+            "big_idea": "Congruent = identical twins (same size AND shape). Similar = stretched siblings (same shape, scaled size).",
+            "visual_example": "**Scale factor for length, area and volume**\n\n```\nLinear scale factor:    k\nArea scale factor:      k²\nVolume scale factor:    k³\n\nExample: if two similar cylinders have lengths in ratio 2 : 3,\n   surface areas are in ratio  2² : 3²  =  4 : 9\n   volumes        are in ratio  2³ : 3³  =  8 : 27\n```",
+            "step_by_step": [
+                "Congruent tests: SSS, SAS, ASA, RHS — match sides/angles exactly.",
+                "Similar shapes: all angles equal, all corresponding sides in the same ratio.",
+                "Find the linear scale factor k = new length / old length.",
+                "For area, use k²; for volume, use k³.",
+                "State WHICH test of congruence/similarity you used.",
+            ],
+        },
+        "geo-7": {
+            "video_id": "h02d922Q5wk",
+            "big_idea": "A vector has size AND direction — written as a column `(x, y)` meaning x across, y up.",
+            "visual_example": "**If `a = (3, 1)` and `b = (−2, 4)`, find `2a + b`**\n\n```\n2a = 2 × ⎛3⎞  =  ⎛6⎞\n        ⎝1⎠     ⎝2⎠\n\n2a + b  =  ⎛6⎞ + ⎛−2⎞  =  ⎛4⎞\n           ⎝2⎠   ⎝ 4⎠     ⎝6⎠\n```",
+            "step_by_step": [
+                "Write each vector as a column ⎛x⎞ / ⎝y⎠.",
+                "To add: add x-components, add y-components.",
+                "To subtract: subtract component by component.",
+                "To scale (ka): multiply each component by k.",
+                "For geometrical proofs, work out the path using vector addition.",
+            ],
+        },
+        "geo-8": {
+            "video_id": "8Wja7Ct_XvY",
+            "big_idea": "A bearing is an angle measured CLOCKWISE from NORTH — always written as three digits (e.g. 045°, 180°, 305°).",
+            "visual_example": "**Point B is on a bearing of 060° from A, 8 km away. Describe it.**\n\n```\n       N\n       │\n       │ 60°\n       │ ╱\n       │╱────── B  (8 km away)\n       A\n\nBearings rules:\n  • measure CLOCKWISE from NORTH\n  • use THREE DIGITS (060° not 60°)\n  • back bearing = bearing ± 180°\n```",
+            "step_by_step": [
+                "Draw a north line at the starting point.",
+                "Measure the angle CLOCKWISE from north to the target.",
+                "Write the angle as three digits: 060°, 135°, 270°.",
+                "For the return bearing, add or subtract 180°.",
+                "For scale drawings, convert using the scale (e.g. 1 cm : 2 km).",
+            ],
+        },
+        "sta-3": {
+            "video_id": "PYEvSuz1Dxo",
+            "big_idea": "Tree diagrams map every possible outcome — multiply ALONG branches for AND, add ACROSS paths for OR.",
+            "visual_example": "**A bag has 4 red and 6 blue balls. Two are drawn WITHOUT replacement. P(both red)?**\n\n```\n            4/10 ── R\n           /         \\ 3/9 ── R\n          /           \\ 6/9 ── B\n  Start ─┤\n          \\ 6/10 ── B  / 4/9 ── R\n                      \\ 5/9 ── B\n\nP(R, R) = 4/10 × 3/9 = 12/90 = 2/15\n```",
+            "step_by_step": [
+                "Draw the first stage's branches with their probabilities.",
+                "Attach the second stage's branches to EACH first-stage outcome.",
+                "Remember: without replacement → probabilities change on stage 2.",
+                "Multiply ALONG the branches for combined outcomes.",
+                "Add the relevant PATHS for 'OR' questions.",
+            ],
+        },
+        "sta-4": {
+            "video_id": "wGzp-wM90EU",
+            "big_idea": "Histograms use FREQUENCY DENSITY (not frequency) so unequal class widths compare fairly — cumulative frequency finds the median and quartiles.",
+            "visual_example": "**Converting frequency to frequency density**\n\n```\n| Class width | Frequency | Frequency density (f ÷ width) |\n|-------------|-----------|-------------------------------|\n|    0 – 5    |     40    |         40 / 5  =  8          |\n|    5 – 10   |     35    |         35 / 5  =  7          |\n|   10 – 20   |     60    |         60 / 10 =  6          |\n|   20 – 45   |     55    |         55 / 25 =  2.2        |\n```",
+            "step_by_step": [
+                "For histograms, ALWAYS compute frequency density = frequency ÷ class width.",
+                "Plot bars of height = frequency density (width varies).",
+                "For cumulative frequency, add each frequency to the running total.",
+                "Plot cumulative frequency at the UPPER bound of each class.",
+                "Median ≈ value at cumulative frequency = n/2; quartiles at n/4 and 3n/4.",
+            ],
+        },
+        "sta-5": {
+            "video_id": "VUaOCgJTPjI",
+            "big_idea": "A scatter graph shows relationships — the line of best fit lets you predict, but NEVER extrapolate wildly.",
+            "visual_example": "**Types of correlation**\n\n```\n Positive           Negative            No correlation\n correlation        correlation         (random)\n      ●                    ●                 ●   ●\n    ●                        ●             ●       ●\n  ●                            ●             ●  ●\n●                                ●         ●       ●\n───────────►       ───────────►          ───────────►\n```",
+            "step_by_step": [
+                "Plot each (x, y) pair as a single point.",
+                "Describe the pattern: positive / negative / none, strong / weak.",
+                "Draw a line of best fit THROUGH the trend (not forced through the origin).",
+                "Use it to estimate — beware of extrapolating beyond the data.",
+                "Name an outlier: a point that clearly doesn't follow the trend.",
+            ],
+        },
+    }
 
     # --- TOPICS ---
     topics_data = [
@@ -1143,8 +1549,10 @@ Example: If a line has gradient 2, the perpendicular gradient is -1/2""",
         },
     ]
 
-    # Insert topics
+    # Insert topics (with guided-journey enrichments merged in)
     for topic in topics_data:
+        enrich = enrichments.get(topic["id"], {})
+        topic.update(enrich)
         await db.topics.insert_one(topic)
 
     # --- QUIZ QUESTIONS ---
@@ -1283,6 +1691,8 @@ Example: If a line has gradient 2, the perpendicular gradient is -1/2""",
     from seed_data import ADDITIONAL_TOPICS, ADDITIONAL_QUIZZES, ADDITIONAL_PAST_PAPERS, ADDITIONAL_FORMULAS, PAPERS_2020_2021
 
     for topic in ADDITIONAL_TOPICS:
+        enrich = enrichments.get(topic["id"], {})
+        topic.update(enrich)
         await db.topics.insert_one(topic)
     for q in ADDITIONAL_QUIZZES:
         await db.quizzes.insert_one(q)
